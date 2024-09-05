@@ -1,0 +1,66 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getVideos } from '@/data/videos';
+import type { ProcessedVideo } from '@/types/video';
+const LIBRARY_ID = import.meta.env.PUBLIC_BUNNY_STREAM_LIBRARY_ID;
+
+interface Props {
+  video: ProcessedVideo;
+}
+
+
+export async function getStaticPaths() {
+  const videos = await getVideos();
+
+  return videos.map((video) => ({
+    params: { gameNum: `${video.gameNumber}` },
+    props: { video },
+  }));
+}
+
+const { video } = Astro.props;
+const gameTitle = `Game ${video.gameNumber}`;
+---
+
+<Layout pageTitle={gameTitle}>
+  <div class="max-w-4xl mx-auto">
+    <div class="relative mb-6">
+      <span class={`absolute right-0 inline-block mb-2 bg-green-100 text-green-700 md:text-lg font-semibold px-4 py-1 rounded-lg ${video.result === 'Win' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+        {video.result}
+      </span>
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4 text-carrot-orange-950 lg:mt-0 lg:ml-0">
+        Game {video.gameNumber} - {video.date}
+      </h1>
+    </div>
+
+    <div class="video-card relative bg-white hover:bg-gray-50 transition-colors duration-300 shadow-lg hover:shadow-xl rounded-xl overflow-hidden mb-6">
+      <div class="relative w-full pb-[56.25%]">
+        <iframe
+          src={`https://iframe.mediadelivery.net/embed/${LIBRARY_ID}/${video.id}`}
+          loading="lazy"
+          class="absolute top-0 left-0 w-full h-full border-0"
+          style="border: none;"
+          allow="accelerometer; gyroscope; encrypted-media; picture-in-picture;"
+          allowfullscreen="true"
+        ></iframe>
+      </div>
+    </div>
+    <div class="relative p-5 bg-white rounded-xl shadow-lg space-y-2 text-carrot-orange-500">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:justify-items-center font-semibold">
+        <div>
+          <p class="font-semibold text-carrot-orange-950">Opponent:</p>
+          <p>{video.opponent}</p>
+        </div>
+        <div>
+          <p class="font-semibold text-carrot-orange-950">Battlefield:</p>
+          <p>{video.location}</p>
+        </div>
+        <div>
+          <p class="font-semibold text-carrot-orange-950">Score:</p>
+          <p class=`${video.result === 'Win' ? 'text-green-700' : 'text-red-700'}`>{video.score}</p>
+        </div>
+      </div>
+    </div>
+    <a href="/" class="text-carrot-orange-800 hover:underline mt-6 block text-center">Back to All Games</a>
+  </div>
+</Layout>

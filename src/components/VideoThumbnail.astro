@@ -1,0 +1,24 @@
+---
+import type { ProcessedVideo } from "@/types/video"
+
+interface Props {
+  video: ProcessedVideo;
+}
+
+const { video } = Astro.props;
+---
+
+<div class="video-card group relative bg-white hover:bg-gray-50 transition-colors duration-300 shadow-lg hover:shadow-xl rounded-xl overflow-hidden">
+  <div class="relative">
+    <img src={video.thumbnailUrl} alt={`Game ${video.gameNumber}`} class="w-full h-56 object-cover" />
+  </div>
+  <div class="relative p-5 space-y-2 text-carrot-orange-500">
+    <h2 class="text-xl text-carrot-orange-950 font-bold">Game {video.gameNumber} - {video.date}</h2>
+    <span class={`absolute top-3 right-5 px-2 py-1 rounded-lg text-xs font-semibold ${video.result === 'Win' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+      {video.result}
+    </span>
+  </div>
+  <a href={`/games/${video.gameNumber}`} class="absolute inset-0" aria-label={`View details for Game ${video.gameNumber} against ${video.opponent}`}>
+    <span class="sr-only">View game details</span>
+  </a>
+</div>

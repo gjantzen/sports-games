@@ -1,16 +1,25 @@
 ---
+import Layout from '@/layouts/Layout.astro';
+import VideoThumbnail from '@/components/VideoThumbnail.astro';
+import { getVideos, getTotalWinsAndLosses } from '@/data/videos';
 
+const videos = await getVideos();
+const { wins, losses } = await getTotalWinsAndLosses();
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout pageTitle="All Games">
+  <div class="flex items-center justify-between mb-4">
+    <h1 class="text-2xl sm:text-3xl font-bold">Season Games</h1>
+    <div class="flex space-x-4 ml-auto">
+      <p> Record:
+        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-lg ml-2">{wins}</span>
+        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-lg ml-2">{losses}</span>
+      </p>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {videos.map((video) => <VideoThumbnail video={video}></VideoThumbnail>)}
+  </div>
+</Layout>
+
+

@@ -1,0 +1,82 @@
+---
+import '@/styles/global.css';
+
+import { SITE_CONFIG } from '@/config';
+
+interface Props {
+  pageTitle: string;
+  description?: string;
+  imageUrl?: string;
+  url?: string;
+}
+
+const currentPath = Astro.url.pathname;
+const { pageTitle, description, imageUrl, url } = Astro.props;
+const defaultDescription = "Epic game videos of the Proper Freight Solution Pirates.";
+const defaultImageUrl = "/social-image.jpg";
+const defaultUrl = "https://pirates.arroweffect.com";
+---
+
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle} - {SITE_CONFIG.siteTitle}</title>
+
+    <meta name="description" content={description || defaultDescription} />
+
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description || defaultDescription} />
+    <meta property="og:image" content={imageUrl || defaultImageUrl} />
+    <meta property="og:url" content={url || defaultUrl} />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description || defaultDescription} />
+    <meta name="twitter:image" content={imageUrl || defaultImageUrl} />
+  </head>
+  <body class="flex flex-col min-h-full bg-carrot-orange-50">
+    <header class="bg-carrot-orange-400 text-white shadow-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex flex-col sm:flex-row items-center justify-between">
+          <div class="flex items-center sm:mb-0">
+            <a href="/" class="flex items-center text-white no-underline">
+              <img
+                src="/logo.jpg"
+                alt="Proper Freight Solutions Logo"
+                class="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-white p-1 mr-3"
+              />
+              <span class="text-lg sm:text-xl md:text-2xl font-bold text-center sm:text-left">
+                <span class="">Proper Freight</span>
+                <span class="">Solutions Pirates</span>
+              </span>
+            </a>
+          </div>
+          {currentPath !== '/' && (
+            <nav>
+              <ul class="flex space-x-4">
+                <li><a href="/" class="hover:text-carrot-orange-900 text-sm sm:text-base">All Games</a></li>
+              </ul>
+            </nav>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-6 sm:px-10 py-8">
+      <slot />
+    </main>
+
+    <footer class="bg-carrot-orange-200 text-carrot-orange-950 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
+        <p class="font-semibold">
+          Arr! {new Date().getFullYear()} be the year of the Proper Freight Solutions Pirates.
+          All booty be rightfully plundered, savvy?
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
