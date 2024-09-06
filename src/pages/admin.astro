@@ -1,0 +1,30 @@
+---
+export const prerender = false;
+
+import Layout from "@/layouts/Layout.astro";
+
+const session = Astro.cookies.get('session');
+if (!session || session.value !== 'authenticated') {
+  return Astro.redirect('/login');
+}
+
+// Handle logout
+if (Astro.request.method === 'POST') {
+  const formData = await Astro.request.formData();
+  if (formData.get('action') === 'logout') {
+    Astro.cookies.delete('session');
+    return Astro.redirect('/login');
+  }
+}
+---
+
+<Layout pageTitle="Protected Page">
+  <h1>Admin Dashboard</h1>
+  <p>This is a protected page. Only authenticated users have access.</p>
+  <form method="POST">
+    <input type="hidden" name="action" value="logout">
+    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+      Log Out
+    </button>
+  </form>
+</Layout>
