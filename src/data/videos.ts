@@ -25,6 +25,19 @@ function parseGameNumber(title: string): string {
   return lastPart.replace('.m4v', '').replace(/^0+/, '') || '';
 }
 
+function calculateResult(score: string): 'Win' | 'Loss' | 'N/A' {
+  const regex = /^(\d+)\s*-\s*(\d+)/;
+  const match = score.match(regex);
+
+  if (match) {
+    const [, ourScore, theirScore] = match.map(Number);
+    if (ourScore > theirScore) return 'Win';
+    if (ourScore < theirScore) return 'Loss';
+  }
+
+  return 'N/A';
+}
+
 async function fetchAndProcessVideos(): Promise<ProcessedVideo[]> {
   const apiKey = import.meta.env.BUNNY_CDN_API_KEY;
 
@@ -40,14 +53,15 @@ async function fetchAndProcessVideos(): Promise<ProcessedVideo[]> {
 
   return videos.items.map((video): ProcessedVideo => {
 		const dateValue = getMetaTagValue(video, 'date');
+    const score = getMetaTagValue(video, 'score');
 
 		return {
 			id: video.guid,
 			gameNumber: parseGameNumber(video.title),
 			opponent: getMetaTagValue(video, 'opponent'),
 			date: parseDate(dateValue),
-			result: getMetaTagValue(video, 'result'),
-			score: getMetaTagValue(video, 'score'),
+      score: score,
+			result: calculateResult(score),
 			location: getMetaTagValue(video, 'location'),
 			thumbnailUrl: `https://vz-a6791770-8f4.b-cdn.net/${video.guid}/${video.thumbnailFileName}`
 		}
