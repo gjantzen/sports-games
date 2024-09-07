@@ -4,11 +4,11 @@ import node from '@astrojs/node';
 
 import svelte from '@astrojs/svelte';
 
+import cloudflare from '@astrojs/cloudflare';
+
 export default defineConfig({
   output: 'hybrid',
-  adapter: node({
-    mode: 'standalone',
-  }),
+  adapter: cloudflare(),
   integrations: [tailwind(), svelte()],
   vite: {
     resolve: {
