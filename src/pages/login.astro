@@ -1,6 +1,5 @@
 ---
 export const prerender = false;
-import { secureCompare } from '@/utils/auth';
 import Layout from '@/layouts/Layout.astro';
 
 interface ErrorResponse {
@@ -11,16 +10,10 @@ let error: string = '';
 
 if (Astro.request.method === 'POST') {
   const data = await Astro.request.formData();
-  const { username, password } = Object.fromEntries(data);
-  console.log('Username provided:', username);
-  console.log('Password provided:', password ? password : 'No password');
+  const formEntries = Object.fromEntries(data);
+  const { username, password } = formEntries;
 
-  if (
-    typeof username === 'string' &&
-    typeof password === 'string' &&
-    secureCompare(username, import.meta.env.ADMIN_USERNAME) &&
-    secureCompare(password, import.meta.env.ADMIN_PASSWORD)
-  ) {
+  if (username === import.meta.env.ADMIN_USERNAME && password === import.meta.env.ADMIN_PASSWORD) {
     Astro.cookies.set('session', 'authenticated', {
       httpOnly: true,
       secure: true,
