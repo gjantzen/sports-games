@@ -3,6 +3,8 @@ import '@/styles/global.css';
 
 import { SITE_CONFIG } from '@/config';
 
+import { ViewTransitions } from 'astro:transitions';
+
 interface Props {
   pageTitle: string;
   description?: string;
@@ -24,6 +26,7 @@ const defaultUrl = "https://pirates.arroweffect.com";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle} - {SITE_CONFIG.siteTitle}</title>
+    <ViewTransitions />
 
     <meta name="description" content={description || defaultDescription} />
 
@@ -39,7 +42,7 @@ const defaultUrl = "https://pirates.arroweffect.com";
     <meta name="twitter:image" content={imageUrl || defaultImageUrl} />
   </head>
   <body class="flex flex-col min-h-full bg-carrot-orange-50">
-    <header class="bg-carrot-orange-400 text-white shadow-md">
+    <header class="bg-carrot-orange-500 text-white shadow-md">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex flex-col sm:flex-row items-center justify-between">
           <div class="flex items-center sm:mb-0">
@@ -73,8 +76,7 @@ const defaultUrl = "https://pirates.arroweffect.com";
     <footer class="bg-carrot-orange-200 text-carrot-orange-950 mt-auto">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
         <p class="font-semibold">
-          Arr! {new Date().getFullYear()} be the year of the Proper Freight Solutions Pirates.
-          All booty be rightfully plundered, savvy?
+          Arr! We're blitzing the competition and sailing towards victory. Hoist the Lombardi, savvy?! 🏴‍☠️ 🏈 🏆
         </p>
       </div>
     </footer>

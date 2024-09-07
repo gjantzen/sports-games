@@ -1,5 +1,6 @@
 ---
 import type { ProcessedVideo } from "@/types/video"
+import { Image } from 'astro:assets';
 
 interface Props {
   video: ProcessedVideo;
@@ -10,7 +11,17 @@ const { video } = Astro.props;
 
 <div class="video-card group relative bg-white hover:bg-gray-50 transition-colors duration-300 shadow-lg hover:shadow-xl rounded-xl overflow-hidden">
   <div class="relative">
-    <img src={video.thumbnailUrl} alt={`Game ${video.gameNumber}`} class="w-full h-56 object-cover" />
+    <div class="skeleton-loader absolute inset-0 bg-gradient-to-r from-carrot-orange-100 via-carrot-orange-200 to-carrot-orange-100 bg-[length:200%_100%]"></div>
+    <Image
+  src={video.thumbnailUrl}
+  alt={`Game ${video.gameNumber}`}
+  width={768}
+  height={448}
+  densities={[1, 2]}
+  sizes="(min-width: 1024px) 384px, 100vw"
+  quality={80}
+  class="w-full h-56 object-cover opacity-0 transition-opacity duration-300"
+/>
   </div>
   <div class="relative p-5 space-y-2 text-carrot-orange-500">
     <h2 class="text-xl text-carrot-orange-950 font-bold">Game {video.gameNumber} - {video.date}</h2>
@@ -22,3 +33,11 @@ const { video } = Astro.props;
     <span class="sr-only">View game details</span>
   </a>
 </div>
+
+<script>
+  import { handleSkeletonLoading } from '@/scripts/global';
+
+  document.addEventListener('astro:page-load', () => {
+    handleSkeletonLoading('.video-card');
+  });
+</script>

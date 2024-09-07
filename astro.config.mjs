@@ -17,4 +17,8 @@ export default defineConfig({
       },
     },
   },
+  image: {
+    domains: ['b-cdn.net'],
+    remotePatterns: [{ protocol: 'https' }],
+  },
 });
