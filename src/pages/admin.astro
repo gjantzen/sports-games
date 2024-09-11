@@ -31,8 +31,8 @@ if (Astro.request.method === 'POST') {
     const date = formData.get('date') as string;
     const location = formData.get('location') as string;
 
-    const API_KEY = import.meta.env.BUNNY_CDN_API_KEY as string;
-    const LIBRARY_ID = import.meta.env.PUBLIC_BUNNY_STREAM_LIBRARY_ID as string;
+    const API_KEY = Astro.locals.runtime.env.BUNNY_CDN_API_KEY as string;
+    const LIBRARY_ID = Astro.locals.runtime.env.PUBLIC_BUNNY_STREAM_LIBRARY_ID as string;
 
     if (!API_KEY || !LIBRARY_ID) {
       message = 'Server configuration error';
