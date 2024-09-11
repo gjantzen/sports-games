@@ -12,11 +12,11 @@ if (Astro.request.method === 'POST') {
   const data = await Astro.request.formData();
   const formEntries = Object.fromEntries(data);
   const { username, password } = formEntries;
-  const ADMIN_USERNAME = import.meta.env.ADMIN_USERNAME;
-  const ADMIN_PASSWORD = import.meta.env.ADMIN_PASSWORD;
+  const ADMIN_USERNAME = Astro.locals.runtime.env.ADMIN_USERNAME;
+  const ADMIN_PASSWORD = Astro.locals.runtime.env.ADMIN_PASSWORD;
 
-  console.log(`Admin sent: ${username}, ${password}`);
-  console.log(`Admin env: ${ADMIN_USERNAME}, ${ADMIN_PASSWORD}`);
+  console.log(`Admin env vars: ${ADMIN_USERNAME}, ${ADMIN_PASSWORD}`);
+
 
   if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
     Astro.cookies.set('session', 'authenticated', {
